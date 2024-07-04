@@ -35,7 +35,7 @@ class RAGFlow:
         """
         name: dataset name
         """
-        res = requests.post(url=self.dataset_url, json={"name": dataset_name}, headers=self.authorization_header)
+        res = requests.post(url=self.dataset_url, json={"name": dataset_name}, headers=self.authorization_header, timeout=60)
         result_dict = json.loads(res.text)
         return result_dict
 
@@ -44,14 +44,14 @@ class RAGFlow:
         if not dataset_id:
             return {"success": False, "message": "Dataset not found."}
 
-        res = requests.delete(f"{self.dataset_url}/{dataset_id}", headers=self.authorization_header)
+        res = requests.delete(f"{self.dataset_url}/{dataset_id}", headers=self.authorization_header, timeout=60)
         if res.status_code == 200:
             return {"success": True, "message": "Dataset deleted successfully!"}
         else:
             return {"success": False, "message": f"Other status code: {res.status_code}"}
 
     def find_dataset_id_by_name(self, dataset_name):
-        res = requests.get(self.dataset_url, headers=self.authorization_header)
+        res = requests.get(self.dataset_url, headers=self.authorization_header, timeout=60)
         for dataset in res.json()['data']:
             if dataset['name'] == dataset_name:
                 return dataset['id']
@@ -65,7 +65,7 @@ class RAGFlow:
             "desc": desc
         }
         try:
-            response = requests.get(url=self.dataset_url, params=params, headers=self.authorization_header)
+            response = requests.get(url=self.dataset_url, params=params, headers=self.authorization_header, timeout=60)
             response.raise_for_status()  # if it is not 200
             original_data = response.json()
             # TODO: format the data
@@ -90,7 +90,7 @@ class RAGFlow:
 
     def get_dataset(self, dataset_id):
         endpoint = f"{self.dataset_url}/{dataset_id}"
-        response = requests.get(endpoint)
+        response = requests.get(endpoint, timeout=60)
         if response.status_code == 200:
             return response.json()
         else:
@@ -98,7 +98,7 @@ class RAGFlow:
 
     def update_dataset(self, dataset_id, params):
         endpoint = f"{self.dataset_url}/{dataset_id}"
-        response = requests.put(endpoint, json=params)
+        response = requests.put(endpoint, json=params, timeout=60)
         if response.status_code == 200:
             return True
         else:

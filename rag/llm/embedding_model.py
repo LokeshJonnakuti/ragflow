@@ -298,7 +298,7 @@ class JinaEmbed(Base):
             "input": texts,
             'encoding_type': 'float'
         }
-        res = requests.post(self.base_url, headers=self.headers, json=data).json()
+        res = requests.post(self.base_url, headers=self.headers, json=data, timeout=60).json()
         return np.array([d["embedding"] for d in res["data"]]), res["usage"]["total_tokens"]
 
     def encode_queries(self, text):

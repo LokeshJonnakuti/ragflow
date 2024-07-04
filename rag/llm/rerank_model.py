@@ -94,7 +94,7 @@ class JinaRerank(Base):
             "documents": texts,
             "top_n": len(texts)
         }
-        res = requests.post(self.base_url, headers=self.headers, json=data).json()
+        res = requests.post(self.base_url, headers=self.headers, json=data, timeout=60).json()
         return np.array([d["relevance_score"] for d in res["results"]]), res["usage"]["total_tokens"]
 
 
