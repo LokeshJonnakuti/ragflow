@@ -18,6 +18,7 @@ import requests
 import json
 
 from httpx import HTTPError
+from security import safe_requests
 
 
 class RAGFlow:
@@ -51,7 +52,7 @@ class RAGFlow:
             return {"success": False, "message": f"Other status code: {res.status_code}"}
 
     def find_dataset_id_by_name(self, dataset_name):
-        res = requests.get(self.dataset_url, headers=self.authorization_header)
+        res = safe_requests.get(self.dataset_url, headers=self.authorization_header)
         for dataset in res.json()['data']:
             if dataset['name'] == dataset_name:
                 return dataset['id']
@@ -65,7 +66,7 @@ class RAGFlow:
             "desc": desc
         }
         try:
-            response = requests.get(url=self.dataset_url, params=params, headers=self.authorization_header)
+            response = safe_requests.get(url=self.dataset_url, params=params, headers=self.authorization_header)
             response.raise_for_status()  # if it is not 200
             original_data = response.json()
             # TODO: format the data
@@ -90,7 +91,7 @@ class RAGFlow:
 
     def get_dataset(self, dataset_id):
         endpoint = f"{self.dataset_url}/{dataset_id}"
-        response = requests.get(endpoint)
+        response = safe_requests.get(endpoint)
         if response.status_code == 200:
             return response.json()
         else:
