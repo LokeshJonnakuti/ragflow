@@ -184,7 +184,7 @@ def chunk(filename, binary=None, lang="Chinese", callback=None, **kwargs):
         else:
             with open(filename, "r") as f:
                 while True:
-                    l = f.readline()
+                    l = f.readline(5_000_000)
                     if not l:
                         break
                     txt += l
@@ -240,7 +240,7 @@ def chunk(filename, binary=None, lang="Chinese", callback=None, **kwargs):
         else:
             with open(filename, "r") as f:
                 while True:
-                    l = f.readline()
+                    l = f.readline(5_000_000)
                     if not l:
                         break
                     txt += l
