@@ -14,7 +14,6 @@
 #  limitations under the License.
 #
 
-import random
 from collections import Counter
 
 from rag.utils import num_tokens_from_string
@@ -24,6 +23,7 @@ import copy
 import roman_numbers as r
 from word2number import w2n
 from cn2an import cn2an
+import secrets
 
 all_codecs = [
     'utf-8', 'gb2312', 'gbk', 'utf_16', 'ascii', 'big5', 'big5hkscs',
@@ -180,7 +180,7 @@ BULLET_PATTERN = [[
 
 def random_choices(arr, k):
     k = min(len(arr), k)
-    return random.choices(arr, k=k)
+    return secrets.SystemRandom().choices(arr, k=k)
 
 
 def not_bullet(line):
